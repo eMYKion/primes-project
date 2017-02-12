@@ -1,4 +1,6 @@
 #this demo1 was developed on a Windows 10 platform, using Chrome as the browser
+#in order to run this demo, you need node_modules in the same scope as the demo folder, with chart.js, 
+#child_process, and socket.io modules.
 
 #to compile laser.cpp to laser.o :
   g++ laser.cpp -o laser.exe -std=c++11
