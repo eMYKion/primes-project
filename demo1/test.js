@@ -2,14 +2,14 @@ const LOG_FILE = "./list.log";
 
 const spawn = require("child_process").spawn;//this is asynchronous
 
-//var app = require('express')();
+var app = require('express')();
 var http = require('http').Server();
 
 var io = require('socket.io')(http);
 
-var evConsts = require("./event-constants.js");
+var evConsts = require("./events-server.js");
 
-/*
+
 //only need this if server is serving the page
 
 app.get('/', function(req, res){
@@ -18,7 +18,7 @@ app.get('/', function(req, res){
 
 app.get('/socket.io-client/dist/socket.io.min.js', function(req, res){
   res.sendFile('C:/Users/Mali/Documents/MIT Primes 2016-17/demo1/socket.io-client/dist/socket.io.min.js');
-});*/
+});
 
 startTime = Date.now();
 
@@ -28,9 +28,13 @@ io.on('connection', function(socket){
   var child = spawn("laser.exe");
 
   child.stdout.on('data', function (dataChunk) {
+    
     console.log('stdout: ' + dataChunk.toString());
+    
     var tmstmp = (Date.now() - startTime)/1000.0;
+    
     socket.emit(evConsts.LASER_TEMP,{data: parseFloat(dataChunk), timestamp: tmstmp});
+    
   });
 
   //child.stdout.pipe(dest);
@@ -49,17 +53,17 @@ io.on('connection', function(socket){
     console.log("user says: " + type.data);
   });
   
-  /*setInterval(function(){
+  setInterval(function(){
     var time = (Date.now() - startTime)/1000.0;
     
     socket.emit(evConsts.LASER_TEMP,{data: (Math.random()-0.5)*5 + 50*Math.cos(2*Math.PI/100.0*time) + 100, timestamp: time});
-  }, 1000);*/
+  }, 1000);
   
   socket.on("disconnect", function(){
     console.log('a user disconnected');
   });
 });
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(8000, '127.0.0.1', function(){
+  console.log('listening on localhost:8000');
 });

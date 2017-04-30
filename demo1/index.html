@@ -10,11 +10,12 @@
   </head>
   <body>
     <canvas id="canvas"></canvas>
-    <script src="event-constants-browser.js"></script>
+    <script src="events-browser.js"></script>
     <script src="../node_modules/chart.js/dist/Chart.min.js"></script>
     <script src="./socket.io-client/dist/socket.io.min.js"></script>
+    
     <script>
-      var socket = io.connect('http://localhost:3000');
+      var socket = io.connect('http://localhost:8000');
       
       var ctx = document.getElementById("canvas").getContext("2d");
       
@@ -41,9 +42,7 @@
         scatterChart.update();
       });
       
-      socket.emit(evConsts, {data:"give me laser readings"});
-      
-        
+      socket.emit(evConsts.USR_MSG, {data:"give me laser readings"});
       
     </script>
   </body>
